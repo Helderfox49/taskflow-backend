@@ -12,6 +12,15 @@ app.use(express.json());
 
 app.use(cors());
 
+// Configuration du middleware : Autorise uniquement le Front-End React
+
+app.use(cors({
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
+}));
+
+
 // Montage du routeur : toutes les routes à l'intérieur de taskRoutes basculeront derrière '/tasks'
 app.use('/tasks', taskRoutes);
 
