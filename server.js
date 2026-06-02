@@ -9,7 +9,7 @@ const app = express();
 //Route de test
 app.get("/api/ping", (req, res) =>{
     res.json({
-        message: "Serveur TaskFlow operationnel \n"
+        message: "Serveur TaskFlow operationnel"
     })
 });
 
