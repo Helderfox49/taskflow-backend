@@ -1,4 +1,4 @@
-const Task = require('../models/Task.js')
+const Task = require('../models/Task')
 
 // Fonction pour créer une nouvelle tâche
 exports.createTask = async (req, res) => {
@@ -16,7 +16,7 @@ exports.createTask = async (req, res) => {
             message: "Tâche créée avec success", 
             newTask
         });
-    } catch(err) {
+    } catch(error) {
         res.status(400).json({
             success: false,
             message: "Erreur de création de la tâche",
@@ -28,9 +28,13 @@ exports.createTask = async (req, res) => {
 // Fonction pour récupérer toutes les tâches
 exports.getAllTasks = async (req, res) => {
     try{
-        const tasks = await Task.find();
-        res.status(200).json(tasks);
-    } catch {
+        const tasks = await Task.find().sort({ createdAt: -1 });;
+        res.status(200).json({
+            success: true,
+            count: tasks.length,
+            tasks
+        });
+    } catch(error) {
         res.status(500).json({
             success: false,
             message: "Erreur dans la requête",
@@ -46,7 +50,8 @@ exports.updateTaskStatus = async (req, res) => {
 
         const task = await Task.findByIdAndUpdate(
             id,  
-            req.body { 
+            req.body,
+            { 
                 new: true,          // Option pour renvoyer le document mis à jour (et non l'ancien)
                 runValidators: true // Option CRUCIALE pour forcer Mongoose à re-vérifier le schéma (ex: vérifier le statusenum)
             }
@@ -78,7 +83,7 @@ exports.deleteTask = async (req, res) => {
     try {
         const id = req.params.id;
 
-        const task = await Task.findByIdAndDelele(id);
+        const task = await Task.findByIdAndDelete(id);
 
         if(!task){
             return res.status(404).json({ 
@@ -91,11 +96,11 @@ exports.deleteTask = async (req, res) => {
             success: true,
             message: "Tâche supprimée avec succès"
         });
-    } catch {
+    } catch(error) {
         res.status(500).json({ 
             success: false,
             message: "Erreur lors de la suppression",
-            error: err.message });
+            error: error.message });
     }
 };
 

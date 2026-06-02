@@ -3,8 +3,17 @@ require("dotenv").config();
 const express = require("express");
 const mongoose =  require("mongoose");
 const cors = require("cors");
+const taskRoutes = require('./routes/taskRoutes');
 
 const app = express();
+
+// Middleware indispensable pour lire le JSON du CURL
+app.use(express.json()); 
+
+app.use(cors());
+
+// Montage du routeur : toutes les routes à l'intérieur de taskRoutes basculeront derrière '/tasks'
+app.use('/tasks', taskRoutes);
 
 //Route de test
 app.get("/api/ping", (req, res) =>{
