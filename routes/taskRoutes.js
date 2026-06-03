@@ -7,6 +7,9 @@ const taskController = require('../controllers/taskController');
 // Route pour l'ajout d'une nouvelle tâche
 router.post('/', taskController.createTask);
 
+//route pour récupérer une tâche selon son id
+router.get("/:id", taskController.getTaskById);
+
 // Route pour récupérer toutes les tâches
 router.get('/', taskController.getAllTasks);
 
